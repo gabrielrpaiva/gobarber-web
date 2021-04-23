@@ -8,7 +8,8 @@ import logoImg from '../../assets/logo.svg';
 
 import Input from '../../components/Input';
 import Button from '../../components/Button';
-import { useAuth } from '../../hooks/AuthContext';
+import { useAuth } from '../../hooks/auth';
+import { useToast } from '../../hooks/toast';
 
 import { Container, Content, Background } from './styles';
 import getValidationErrors from '../../utils/getValidationErrors';
@@ -22,7 +23,8 @@ const SignIn: React.FC = () => {
   const formRef = useRef<FormHandles>(null);
 
   const { user, sigIn } = useAuth();
-  console.log(user);
+  const { addToast } = useToast();
+
   const handleSubmit = useCallback(
     async (data: SingInFormData) => {
       try {
@@ -36,7 +38,7 @@ const SignIn: React.FC = () => {
           abortEarly: false,
         });
         const { email, password } = data;
-        sigIn({
+        await sigIn({
           email,
           password,
         });
@@ -46,9 +48,14 @@ const SignIn: React.FC = () => {
 
           formRef.current?.setErrors(errors);
         }
+        addToast({
+          type: 'error',
+          title: 'Erro na autenticação',
+          description: 'Ocorreu um erro ao fazer login, cheque as credenciais',
+        });
       }
     },
-    [sigIn],
+    [sigIn, addToast],
   );
 
   return (

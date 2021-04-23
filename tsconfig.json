@@ -1,3 +1,6 @@
+// 20210420102600
+// https://raw.githubusercontent.com/gabrielrpaiva/gobarber-web/master/tsconfig.json
+
 {
   "compilerOptions": {
     "target": "es5",
